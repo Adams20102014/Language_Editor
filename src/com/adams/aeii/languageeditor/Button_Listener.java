@@ -49,7 +49,8 @@ public class Button_Listener implements ActionListener {
         }else if(e.getActionCommand().equals("remove")) {
         }else if(e.getActionCommand().equals("add")) {
             al = new Add_Language();
-            al.initJpAdd();
+            al.initJpAdd();  
+//            al.getClass();
         }
     }
 

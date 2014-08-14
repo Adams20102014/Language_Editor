@@ -8,7 +8,7 @@ package com.adams.aeii.languageeditor;
 
 import java.util.Properties;
 import javax.swing.JTable;
-
+         
 /**
  *
  * @author s1407003
@@ -47,4 +47,6 @@ public class Jt_Language {
     public Properties getProp() {
         return prop;
     }
+    
+//                public 
 }
