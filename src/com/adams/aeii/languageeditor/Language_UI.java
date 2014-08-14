@@ -8,7 +8,10 @@ package com.adams.aeii.languageeditor;
 import java.awt.Dimension;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 /**
  *
@@ -27,6 +30,8 @@ public class Language_UI extends JFrame {
         this.setLocationRelativeTo(null);
         this.getContentPane().setLayout(null);
         
+        ImageIcon icon = new ImageIcon(this.getClass().getResource("\\image\\aeii.png"));
+        this.setIconImage(icon.getImage());
         
         jlg = new Jt_Language();
         btn = new Button(this,jlg);
@@ -43,7 +48,8 @@ public class Language_UI extends JFrame {
         
     }
     
-    public static void main (String[] args) {
+    public static void main (String[] args) throws ClassNotFoundException, IllegalAccessException, InstantiationException, UnsupportedLookAndFeelException {
+        UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         new Language_UI();
     }
 }
