@@ -65,6 +65,7 @@ public class Button_Listener implements ActionListener {
                     FileInputStream fis = new FileInputStream(file);
                     prop.loadFromXML(fis);
                     jlang.setProp(prop);
+                    jlang.setCellData();
                     jlang.getCellData();
                     jlang.getJtLanguage();
                     isEnabled = true;

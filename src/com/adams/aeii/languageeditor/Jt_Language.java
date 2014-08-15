@@ -26,7 +26,7 @@ public class Jt_Language {
     private JScrollPane js_prop;
 
     private DefaultTableModel model;
-    
+
     private int row;
 
     public Jt_Language() {
@@ -35,9 +35,10 @@ public class Jt_Language {
 
     public JScrollPane initJsProp() {
         jt_language = new JTable();
+        jt_language.setRowHeight(20);
         prop = new Properties();
 //        jt_language.setEnabled(false);
-        cellData = new Object[100][100];
+//        cellData = new Object[100][100];
         js_prop = new JScrollPane(jt_language);
 //        js_prop.setBorder(BorderFactory.createTitledBorder("键值对应关系"));
         js_prop.setBounds(5, 10, 500, 420);
@@ -59,8 +60,13 @@ public class Jt_Language {
     public Properties getProp() {
         return prop;
     }
-    
-    public Object[][] getCellData() {
+
+    public void setCellData() {
+        int key_count = prop.keySet().size();
+        cellData = new Object[key_count][2];
+    }
+
+    public void getCellData() {
         Iterator itr = prop.entrySet().iterator();
         int i = 0;
         int j = 0;
@@ -72,7 +78,6 @@ public class Jt_Language {
             j = 0;
             i++;
         }
-        return cellData;
     }
 
     public void getJtLanguage() {
@@ -95,9 +100,11 @@ public class Jt_Language {
     }
 
     public boolean isSelected() {
-        if(jt_language.getSelectedRow() == -1) {
+        if (jt_language.getSelectedRow() == -1) {
             return false;
-        }else return this.getKeyText() != null;
+        } else {
+            return this.getKeyText() != null;
+        }
     }
 
     public String getKeyText() {
@@ -111,12 +118,17 @@ public class Jt_Language {
     }
 
     public void addCellData(String key, String value) {
-        int i = 0;
-        for(; i < cellData.length; i++) {
-            if(cellData[i][0] != null) continue;
-            else break;
-        }
-        System.out.println(cellData[20][0]);
+        int i = cellData.length;
+        cellData = new Object[i+1][2];
+        this.getCellData();
+//        for (; i < cellData.length; i++) {
+//            if (cellData[i][0] != null) {
+//                continue;
+//            } else {
+//                break;
+//            }
+//        }
+//        System.out.println(cellData[20][0]);
         System.out.println(i);
         cellData[i][0] = key;
         cellData[i][1] = value;
@@ -132,17 +144,17 @@ public class Jt_Language {
         };
         jt_language.setModel(model);
     }
-    
+
     public void updateCellData(String key, String value) {
-        if(jt_language.getSelectedRow() != -1) {
+        if (jt_language.getSelectedRow() != -1) {
             row = jt_language.getSelectedRow();
         }
-        System.out.println(row);
+//        System.out.println(row);
         cellData[row][0] = key;
         cellData[row][1] = value;
         prop.put(key, value);
     }
-    
+
     public boolean isExisted(String key) {
         return prop.containsKey(key);
     }
