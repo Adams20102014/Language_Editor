@@ -8,7 +8,6 @@ package com.adams.aeii.languageeditor;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Properties;
-import javax.swing.BorderFactory;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -27,6 +26,8 @@ public class Jt_Language {
     private JScrollPane js_prop;
 
     private DefaultTableModel model;
+    
+    private int row;
 
     public Jt_Language() {
 
@@ -38,7 +39,7 @@ public class Jt_Language {
 //        jt_language.setEnabled(false);
         cellData = new Object[100][100];
         js_prop = new JScrollPane(jt_language);
-        js_prop.setBorder(BorderFactory.createTitledBorder("键值对应关系"));
+//        js_prop.setBorder(BorderFactory.createTitledBorder("键值对应关系"));
         js_prop.setBounds(5, 10, 500, 420);
         return js_prop;
     }
@@ -58,7 +59,7 @@ public class Jt_Language {
     public Properties getProp() {
         return prop;
     }
-
+    
     public Object[][] getCellData() {
         Iterator itr = prop.entrySet().iterator();
         int i = 0;
@@ -94,7 +95,9 @@ public class Jt_Language {
     }
 
     public boolean isSelected() {
-        return jt_language.getSelectedRow() != -1;
+        if(jt_language.getSelectedRow() == -1) {
+            return false;
+        }else return this.getKeyText() != null;
     }
 
     public String getKeyText() {
@@ -128,5 +131,19 @@ public class Jt_Language {
             }
         };
         jt_language.setModel(model);
+    }
+    
+    public void updateCellData(String key, String value) {
+        if(jt_language.getSelectedRow() != -1) {
+            row = jt_language.getSelectedRow();
+        }
+        System.out.println(row);
+        cellData[row][0] = key;
+        cellData[row][1] = value;
+        prop.put(key, value);
+    }
+    
+    public boolean isExisted(String key) {
+        return prop.containsKey(key);
     }
 }

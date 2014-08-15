@@ -13,6 +13,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileFilter;
 
 /**
  *
@@ -26,17 +27,34 @@ public class Button_Listener implements ActionListener {
     private File file;
     private final Jt_Language jlang;
     private Add_Language al;
+    private boolean isEnabled = false;
+    private Button btn;
+//    private String title;
+    private boolean temp;
 
-    public Button_Listener(Language_UI lu, Jt_Language jlang) {
+    public Button_Listener(Language_UI lu, Jt_Language jlang, Button btn) {
         this.lu = lu;
         this.jlang = jlang;
+        this.btn = btn;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         prop = new Properties();
-        if (e.getActionCommand().equals("open")) {
+        if (e.getActionCommand().equals("Open")) {
             fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileFilter() {
+
+                @Override
+                public boolean accept(File file) {
+                    return file.getName().endsWith(".xml");
+                }
+
+                @Override
+                public String getDescription() {
+                    return "Language Editor(*.xml)";
+                }
+            });
             int state = fileChooser.showOpenDialog(lu);
             if (state == JFileChooser.APPROVE_OPTION) {
                 try {
@@ -49,32 +67,56 @@ public class Button_Listener implements ActionListener {
                     jlang.setProp(prop);
                     jlang.getCellData();
                     jlang.getJtLanguage();
+                    isEnabled = true;
+                    btn.getEnabled(isEnabled);
                     fis.close();
                 } catch (IOException ex) {
                 }
             }
-        } else if (e.getActionCommand().equals("save")) {
+        } else if (e.getActionCommand().equals("Save")) {
             fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileFilter() {
+
+                @Override
+                public boolean accept(File file) {
+                    return file.getName().endsWith(".xml");
+                }
+
+                @Override
+                public String getDescription() {
+                    return "Language Editor(*.xml)";
+                }
+            });
             int state = fileChooser.showSaveDialog(lu);
             if (state == JFileChooser.APPROVE_OPTION) {
                 try {
                     file = fileChooser.getSelectedFile();
+                    if(!file.getName().endsWith(".xml")) {
+                        file = new File(file.getAbsolutePath()+".xml");
+                    }
                     FileOutputStream fos = new FileOutputStream(file);
-                    jlang.getProp().storeToXML(fos, "注释");
+                    jlang.getProp().storeToXML(fos, "注释部分");
                     fos.close();
                 } catch (IOException ex) {
                 }
             }
-        } else if (e.getActionCommand().equals("remove")) {
+        } else if (e.getActionCommand().equals("Remove")) {
             jlang.removeRow();
-        } else if (e.getActionCommand().equals("add")) {
-            al = new Add_Language(jlang);
+        } else if (e.getActionCommand().equals("Add")) {
+//            title = "添加键值对";
+            temp = false;
+            al = new Add_Language(jlang, temp);
+            al.initJdAdd();
+            al.jd_add.setVisible(true);
+        } else if (e.getActionCommand().equals("Editor")) {
             if (jlang.isSelected()) {
+                temp = true;
+//                title = "编辑键值对";
+                al = new Add_Language(jlang, temp);
                 al.initJdAdd();
                 al.setJfKeyText(jlang.getKeyText());
                 al.setJfValueText(jlang.getValueText());
-            } else {
-                al.initJdAdd();
+                al.jd_add.setVisible(true);
             }
         }
     }

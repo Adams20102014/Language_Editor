@@ -8,6 +8,7 @@ package com.adams.aeii.languageeditor;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -35,15 +36,26 @@ public class Add_Language extends JFrame {
     private JPanel jp_input;
 
     private Jt_Language jlang;
-            
-    public Add_Language(Jt_Language jlang) {
+
+//    private String title;
+    private boolean temp;
+
+    public Add_Language(Jt_Language jlang, boolean temp) {
         this.jlang = jlang;
+        this.temp = temp;
+//        this.title = title;
     }
 
     @SuppressWarnings("empty-statement")
     public JDialog initJdAdd() {
         jd_add = new JDialog(this);
-        jd_add.setTitle("添加键值对");
+        jd_add.setModal(true);
+        if (temp == false) {
+            jd_add.setTitle("添加键值对");
+        } else {
+            jd_add.setTitle("编辑键值对");
+        }
+
         jd_add.setLayout(null);
 //        jd_add.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jd_add.getContentPane().setPreferredSize(new Dimension(240, 140));
@@ -62,40 +74,45 @@ public class Add_Language extends JFrame {
         jp_input.add(jf_key);
         jp_input.add(jl_value);
         jp_input.add(jf_value);
-        
+        if (temp == true) {
+            jf_key.setEditable(false);
+        }
         jp_input.setBounds(10, 10, 230, 80);
 
         btn_ok = new JButton("Ok");
         btn_ok.setBounds(50, 110, 80, 30);
-        btn_ok.addActionListener(new Add_Listener(this,jlang));
+        btn_ok.addActionListener(new Add_Listener(this, jlang));
         btn_cancel = new JButton("Cancel");
         btn_cancel.setBounds(140, 110, 80, 30);
-        btn_cancel.addActionListener(new Add_Listener(this,jlang));;
+        btn_cancel.addActionListener(new Add_Listener(this, jlang));;
 
         jd_add.add(jp_input);
         jd_add.add(btn_ok);
         jd_add.add(btn_cancel);
 
-        jd_add.setVisible(true);
+//        jd_add.setVisible(true);
         return jd_add;
     }
-    
+
     public void setJfKeyText(String key) {
         jf_key.setText(key);
     }
-    
+
     public String getJfKeyText() {
 //        System.out.println(jf_key.getText());
         return jf_key.getText();
     }
-    
+
     public void setJfValueText(String value) {
         jf_value.setText(value);
     }
-    
+
     public String getJfValueText() {
 //        System.out.println(jf_value.getText());
         return jf_value.getText();
     }
-    
+
+//    public JTextField getJfValue() {
+//        return jf_value;
+//    }
 }
