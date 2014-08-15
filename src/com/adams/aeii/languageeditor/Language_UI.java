@@ -42,7 +42,7 @@ public class Language_UI extends JFrame {
             }
         });
         
-        this.getContentPane().add(jlg.initJtLanguage());
+        this.getContentPane().add(jlg.initJsProp());
         this.getContentPane().add(btn.initJpButton());
         this.setVisible(true);
         
